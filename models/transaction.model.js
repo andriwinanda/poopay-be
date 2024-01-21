@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const paymentSchema = new Schema({
+const transactionSchema = new Schema({
   orderId: String,
   amount: String,
   status: String,
   providerId: String,
   date: Date
 })
-paymentSchema.set('toJSON', {
+transactionSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret, options) {
@@ -17,4 +17,4 @@ paymentSchema.set('toJSON', {
     delete ret.__v
   }
 })
-module.exports = mongoose.model('Payment', paymentSchema)
+module.exports = mongoose.model('Transaction', transactionSchema)

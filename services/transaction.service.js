@@ -1,4 +1,4 @@
-const PaymentModel = require( '../models/payment.model' )
+const TransactionModel = require( '../models/transaction.model' )
 
 
 async function create ( req, res )
@@ -6,8 +6,8 @@ async function create ( req, res )
   try
   {
     const { orderId, amount, status, providerId, date } = req.body
-    const payment = new PaymentModel( { orderId, amount, status, providerId, date } )
-    const data = await payment.save()
+    const transaction = new TransactionModel( { orderId, amount, status, providerId, date } )
+    const data = await transaction.save()
     return res.status( 200 ).json( {
       message: 'Ok',
       data
@@ -27,7 +27,7 @@ async function findAll ( req, res )
   if ( keyword ) query.name = { "$regex": keyword, "$options": "i" }
   try
   {
-    const data = await PaymentModel.find( query )
+    const data = await TransactionModel.find( query )
     return res.status( 200 ).json( data )
   } catch ( error )
   {
@@ -41,7 +41,7 @@ async function findOne ( req, res )
   const id = req.params.id
   try
   {
-    const data = await PaymentModel.findById( id )
+    const data = await TransactionModel.findById( id )
 
     if ( data )
     {
@@ -62,12 +62,12 @@ async function findOne ( req, res )
 async function update ( req, res )
 {
   const { orderId, amount, status, providerId, date } = req.body
-  let payment = new PaymentModel( { orderId, amount, status, providerId, date }, { _id : false })
+  let transaction = new TransactionModel( { orderId, amount, status, providerId, date }, { _id : false })
   const { id } = req.params
   try
   {
-    console.log(payment)
-    const data = await PaymentModel.findByIdAndUpdate( id, payment )
+    console.log(transaction)
+    const data = await TransactionModel.findByIdAndUpdate( id, transaction )
     return res.status( 200 ).json( {
       message: 'Ok',
       data
@@ -85,7 +85,7 @@ async function deleteOne ( req, res )
   const id = req.params.id
   try
   {
-    await PaymentModel.findByIdAndDelete( id )
+    await TransactionModel.findByIdAndDelete( id )
     return res.status( 200 ).json( {
       message: 'Ok',
     } )
