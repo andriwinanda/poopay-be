@@ -30,21 +30,19 @@ async function findAll(req, res) {
     const orderData = []
     for (i in data) {
       const detail = {}
-      const transaction = await TransactionModel.find({ orderId: data[i].id })
+      const transaction = await TransactionModel.findOne({ orderId: data[i].id })
       const product = await ProductModel.findById(data[i].productId)
       detail.id = data[i].id
       detail.quantity = data[i].quantity
       detail.total = data[i].total
-      // detail.product = product
-      // detail.status = transaction.length ? transaction[0].status : data[i].status
-      // detail.date = transaction.length ? transaction[0].date : data[i].date
-      // detail.transaction = transaction.length ? transaction[0] : null
+      detail.product = product
+      detail.status = transaction ? transaction.status : data[i].status
+      detail.date = transaction ? transaction.date : data[i].date
+      detail.transaction = transaction ? transaction : null
       orderData.push(detail)
-      console.log(transaction)
-      console.log(product)
     }
 
-    return res.status(200).json(data)
+    return res.status(200).json(orderData)
   } catch (error) {
     return res.status(500).json({
       message: error.message
