@@ -20,29 +20,29 @@ async function create(req, res) {
 }
 
 async function findAll(req, res) {
-  const { userId } = req.query
+  // const { userId } = req.query
   const query = {}
-  if (userId) query.userId = userId
+  // if (userId) query.userId = userId
 
   try {
     const data = await OrderModel.find(query)
-    const orderData = []
-    for (i in data) {
-      const detail = {}
-      const transaction = await TransactionModel.find({ orderId: data[i].id })
-      const product = await productModel.findById(data[i].productId)
-      detail.id = data[i].id
-      detail.quantity = data[i].quantity
-      detail.total = data[i].total
-      detail.product = product
-      detail.status = transaction.length ? transaction[0].status : data[i].status
-      detail.date = transaction.length ? transaction[0].date : data[i].date
-      detail.transaction = transaction.length ? transaction[0] : null
-      orderData.push(detail)
-    }
+    // const orderData = []
+    // for (i in data) {
+    //   const detail = {}
+    //   const transaction = await TransactionModel.find({ orderId: data[i].id })
+    //   const product = await productModel.findById(data[i].productId)
+    //   detail.id = data[i].id
+    //   detail.quantity = data[i].quantity
+    //   detail.total = data[i].total
+    //   detail.product = product
+    //   detail.status = transaction.length ? transaction[0].status : data[i].status
+    //   detail.date = transaction.length ? transaction[0].date : data[i].date
+    //   detail.transaction = transaction.length ? transaction[0] : null
+    //   orderData.push(detail)
+    // }
 
 
-    return res.status(200).json(orderData)
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json({
       message: error.message
