@@ -1,14 +1,25 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
+
 const orderSchema = new Schema({
-  userId: String,
-  productId: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  },
+  providerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'PaymentMethod'
+  },
   quantity: Number,
   total: Number,
-  date: Date,
-  status: String
-
+  status: String,
+}, { 
+  timestamps: true 
 })
 orderSchema.set('toJSON', {
   virtuals: true,

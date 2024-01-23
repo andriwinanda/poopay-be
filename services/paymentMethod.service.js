@@ -23,7 +23,7 @@ async function findAll(req, res) {
   if (keyword) query.name = { "$regex": keyword, "$options": "i" }
   try {
     const data = await PaymentMethodModel.find(query)
-    data.map(el => el.imageUrl = process.env.ASSETS_URL + el.imageUrl)
+    data.map(el => el.imageUrl = el.imageUrl)
     return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json({
@@ -35,7 +35,7 @@ async function findOne(req, res) {
   const id = req.params.id
   try {
     const data = await PaymentMethodModel.findById(id)
-    data.imageUrl = process.env.ASSETS_URL + data.imageUrl
+    data.imageUrl = data.imageUrl
     if (data) {
       return res.status(200).json(data)
     }

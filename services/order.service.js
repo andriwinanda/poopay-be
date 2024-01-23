@@ -5,8 +5,8 @@ const TransactionModel = require('../models/transaction.model')
 
 async function create(req, res) {
   try {
-    const { userId, productId, quantity, total, date, status } = req.body
-    const order = new OrderModel({ userId, productId, quantity, total, date, status })
+    const { userId, productId, providerId, quantity, total, status } = req.body
+    const order = new OrderModel({ userId, productId, providerId, quantity, total, status })
     const data = await order.save()
     return res.status(200).json({
       message: 'Ok',
@@ -26,23 +26,8 @@ async function findAll(req, res) {
   if (userId) query.userId = userId
 
   try {
-    const data = await OrderModel.find(query)
-    const orderData = []
-    for (i in data) {
-      const detail = {}
-      const transaction = await TransactionModel.findOne({ orderId: data[i].id })
-      const product = await ProductModel.findById(data[i].productId)
-      detail.id = data[i].id
-      detail.quantity = data[i].quantity
-      detail.total = data[i].total
-      detail.product = product
-      detail.status = transaction ? transaction.status : data[i].status
-      detail.date = transaction ? transaction.date : data[i].date
-      detail.transaction = transaction ? transaction : null
-      orderData.push(detail)
-    }
-
-    return res.status(200).json(orderData)
+    const data = await OrderModel.find(query).populate('productId').populate('providerId').populate('userId').sort({updatedAt: 'desc'})
+    return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json({
       message: error.message
@@ -52,11 +37,10 @@ async function findAll(req, res) {
 async function findOne(req, res) {
   const id = req.params.id
   try {
-    const data = await OrderModel.findById(id)
+    const data = await OrderModel.findById(id).populate('productId').populate('providerId').populate('userId')
     if (data) {
       return res.status(200).json(data)
     }
-
     return res.status(404).json({
       message: 'Not Found',
     })
@@ -68,8 +52,8 @@ async function findOne(req, res) {
 }
 
 async function update(req, res) {
-  const { userId, productId, quantity, total, date, status } = req.body
-  let order = new OrderModel({ userId, productId, quantity, total, date, status }, { _id: false })
+  const { userId, productId, providerId, quantity, total, status } = req.body
+  let order = new OrderModel({ userId, productId, providerId, quantity, total, status }, { _id: false })
   const { id } = req.params
   try {
     const data = await OrderModel.findByIdAndUpdate(id, order)
