@@ -52,7 +52,6 @@ async function findOne(req, res) {
 
 async function update(req, res) {
   const { name, imageUrl, description, code } = req.body
-  imageUrl.replace(process.env.ASSETS_URL, '')
   let paymentMethod = new PaymentMethodModel({ name, imageUrl, description, code }, { _id: false })
   const { id } = req.params
   try {
