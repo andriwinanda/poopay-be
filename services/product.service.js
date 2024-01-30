@@ -63,7 +63,7 @@ async function findOne ( req, res )
 async function update ( req, res )
 {
   const { name, price, description, imageUrl } = req.body
-  imageUrl.replace(process.env.ASSETS_URL, '')
+  if (imageUrl) imageUrl.replace(process.env.ASSETS_URL, '')
   const product = new ProductModel( { name, price, description, imageUrl }, { _id : false } )
   const { id } = req.params
   try
