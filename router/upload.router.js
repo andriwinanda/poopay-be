@@ -56,7 +56,7 @@ routes.post( '/', upload.single( 'file' ), ( request, response ) =>
     cloudinary.uploader.upload( image,
       {
         public_id: fileName.replace(/\.[^/.]+$/, ""),
-        folder: 'delica'
+        folder: 'poopay'
       },
       ( error, result ) =>
       {
