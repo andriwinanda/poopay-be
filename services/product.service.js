@@ -28,7 +28,6 @@ async function findAll ( req, res )
   try
   {
     const data = await ProductModel.find( query )
-    data.map(el => el.imageUrl = process.env.ASSETS_URL + el.imageUrl )
     return res.status( 200 ).json( data )
   } catch ( error )
   {
@@ -43,7 +42,6 @@ async function findOne ( req, res )
   try
   {
     const data = await ProductModel.findById( id )
-    data.imageUrl = process.env.ASSETS_URL + data.imageUrl
     if ( data )
     {
       return res.status( 200 ).json( data )
@@ -63,7 +61,6 @@ async function findOne ( req, res )
 async function update ( req, res )
 {
   const { name, price, description, imageUrl } = req.body
-  if (imageUrl) imageUrl.replace(process.env.ASSETS_URL, '')
   const product = new ProductModel( { name, price, description, imageUrl }, { _id : false } )
   const { id } = req.params
   try
