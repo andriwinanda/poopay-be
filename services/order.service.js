@@ -5,8 +5,8 @@ const TransactionModel = require('../models/transaction.model')
 
 async function create(req, res) {
   try {
-    const { userId, productId, providerId, quantity, total, status } = req.body
-    const order = new OrderModel({ userId, productId, providerId, quantity, total, status })
+    const { userId, productId, providerId, quantity, price, total, status } = req.body
+    const order = new OrderModel({ userId, productId, providerId, quantity, price, total, status })
     const data = await order.save()
     return res.status(200).json({
       message: 'Ok',
@@ -52,8 +52,8 @@ async function findOne(req, res) {
 }
 
 async function update(req, res) {
-  const { userId, productId, providerId, quantity, total, status } = req.body
-  let order = new OrderModel({ userId, productId, providerId, quantity, total, status }, { _id: false })
+  const { userId, productId, providerId, quantity, price, total, status } = req.body
+  let order = new OrderModel({ userId, productId, providerId, quantity, price, total, status }, { _id: false })
   const { id } = req.params
   try {
     const data = await OrderModel.findByIdAndUpdate(id, order)
