@@ -15,6 +15,26 @@ async function findAll(req, res) {
   }
 }
 
+async function findSeller(req, res) {
+  const id = req.params.id
+  try {
+
+    const data = await UserModel.findOne({role: 'ROLE_SELLER'})
+    console.log(data)
+    if (data) {
+      return res.status(200).json(data)
+    }
+
+    return res.status(404).json({
+      message: 'Not Found',
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    })
+  }
+}
+
 async function findOne(req, res) {
   const id = req.params.id
   try {
@@ -90,5 +110,5 @@ async function deleteOne(req, res) {
   }
 }
 
-module.exports = { findAll, findOne, update, deleteOne, getDetails }
+module.exports = { findAll, findOne, update, deleteOne, getDetails, findSeller }
 
