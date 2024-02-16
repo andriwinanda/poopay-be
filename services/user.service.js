@@ -20,7 +20,6 @@ async function findSeller(req, res) {
   try {
 
     const data = await UserModel.findOne({role: 'ROLE_SELLER'})
-    console.log(data)
     if (data) {
       return res.status(200).json(data)
     }
@@ -39,7 +38,6 @@ async function findOne(req, res) {
   const id = req.params.id
   try {
     const data = await UserModel.findById(id)
-    console.log(data)
     if (data) {
       return res.status(200).json(data)
     }
@@ -64,7 +62,9 @@ async function getDetails(req, res) {
         id: data._id,
         name: data.name,
         email: data.email,
-        phone: data.phone
+        phone: data.phone,
+        address: data.address,
+        zip: data.zip,
       }
       )
     }
@@ -80,8 +80,8 @@ async function getDetails(req, res) {
 }
 
 async function update(req, res) {
-  const { email, password, name, phone, role } = req.body
-  const user = new UserModel({ email, password, name, phone, role }, { _id: false })
+  const { email, password, name, address, zip, phone, role } = req.body
+  const user = new UserModel({ email, password, name, address, zip, phone, role }, { _id: false })
   const { id } = req.params
   try {
     const data = await UserModel.findByIdAndUpdate(id, user)

@@ -79,11 +79,10 @@ const { request } = require('express')
 
 exports.signup = async function (req, res) {
   const existingUser = await UserModel.findOne({ email: req.body.email })
-  console.log(existingUser)
   if (!existingUser) {
     try {
-      const { email, password, name, phone, role } = req.body
-      const user = new UserModel({ email, password, name, phone, role })
+      const { email, password, name, address, zip, phone, role } = req.body
+      const user = new UserModel({ email, password, name, address, zip, phone, role })
       user.password = bcrypt.hashSync(req.body.password, 10)
       const data = await user.save()
       return res.status(200).json({
@@ -121,8 +120,16 @@ exports.signin = (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      address: user.address,
+      zip: user.zip,
       role: user.role,
-      access_token: jwt.sign({ email: user.email, name: user.name, role: user.role, id: user._id }, config.secret)
+      access_token: jwt.sign({ 
+        email: user.email, 
+        name: user.name, 
+        role: user.role, 
+        address: user.address,
+        zip: user.zip,
+        id: user._id }, config.secret)
     })
   })
   //   UserModel.findOne( {

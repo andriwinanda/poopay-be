@@ -55,7 +55,6 @@ async function update(req, res) {
   let paymentMethod = new PaymentMethodModel({ name, imageUrl, description, code }, { _id: false })
   const { id } = req.params
   try {
-    console.log(paymentMethod)
     const data = await PaymentMethodModel.findByIdAndUpdate(id, paymentMethod)
     return res.status(200).json({
       message: 'Ok',

@@ -15,6 +15,7 @@ const orderSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PaymentMethod'
   },
+  shipment: Object,
   price: Number,
   quantity: Number,
   total: Number,
