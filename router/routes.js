@@ -25,6 +25,7 @@ router.use( function ( req, res, next )
     {
       if ( err ) req.user = undefined
       req.user = decode
+      if (!decode.name) req.user = undefined
       next()
     } )
   } else
