@@ -78,25 +78,27 @@ const { request } = require('express')
 
 
 exports.signup = async function (req, res) {
-  const existingUser = await UserModel.findOne({ email: req.body.email })
-  if (!existingUser) {
-    try {
-      const { email, password, name, address, zip, phone, role } = req.body
-      const user = new UserModel({ email, password, name, address, zip, phone, role })
-      user.password = bcrypt.hashSync(req.body.password, 10)
-      const data = await user.save()
-      return res.status(200).json({
-        message: 'Ok',
-        data
-      })
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+  if (req.body.email && req.body.password && req.body.name && req.body.address && req.body.phone && req.body.zip) {
+    const existingUser = await UserModel.findOne({ email: req.body.email })
+    if (!existingUser) {
+      try {
+        const { email, password, name, address, zip, phone, role } = req.body
+        const user = new UserModel({ email, password, name, address, zip, phone, role })
+        user.password = bcrypt.hashSync(req.body.password, 10)
+        const data = await user.save()
+        return res.status(200).json({
+          message: 'Ok',
+          data
+        })
+      } catch (error) {
+        return res.status(500).json({
+          message: error.message
+        })
+      }
+    } else {
+      return res.status(409).json({ message: 'Email telah terdaftar' });
     }
-  } else {
-    return res.status(409).json({ message: 'User already exists' });
-  }
+  } else  return res.status(401).json({ message: 'Lengkapi data' });
 }
 
 exports.loginRequired = function (req, res, next) {

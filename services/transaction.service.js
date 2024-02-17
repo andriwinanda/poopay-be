@@ -66,7 +66,6 @@ async function update ( req, res )
   const { id } = req.params
   try
   {
-    console.log(transaction)
     const data = await TransactionModel.findByIdAndUpdate( id, transaction )
     return res.status( 200 ).json( {
       message: 'Ok',
